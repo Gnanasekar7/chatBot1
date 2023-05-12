@@ -20,11 +20,14 @@ function Admin() {
     const errors={}
     
     if(!value.email){
-        errors.fname="email is required"
+        errors.email="email is required"
     }
     if(!value.pass){
-        errors.lname="password is required"
+        errors.password="password is required"
     }
+    if(value.pass.length <6){
+      errors.password="invalid pass"
+  }
     return errors
 }
 const handleSubmit=(e)=>{
@@ -76,6 +79,7 @@ useEffect(()=>
         <p>{formErrors.email}</p>
         <label>Password  </label>
         <input type='password' placeholder='Password' name="pass" value={formValues.pass} onChange={handleChange}></input>
+        <p>{formErrors.password}</p>
         <input type='submit' value='Submit'  /*onClick={() => window.location.reload(false)}*/></input>
         </form>
     </div>

@@ -151,7 +151,6 @@ useEffect(()=>
       headers: {
         Authorization: `Bearer ${localStorage.getItem('token')}`
       }
-      
     })
     .then(response => {
       console.log((response))
@@ -381,12 +380,11 @@ const renderLastArrayElements = (array) => {
         justifyContent: 'flex-start',
         overflow: 'auto',
       }}
-    >
-    
+      >
       <h2>Welcome {email}</h2>
-      <h2>Last login info:</h2>
+      <h2>Previous login info:</h2>
        {
-      renderArray(history.slice(0, 3))
+         renderArray(history.slice(0, 3))
        } 
        {
         renderLastArrayElements(history)

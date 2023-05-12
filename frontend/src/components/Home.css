@@ -1,0 +1,55 @@
+.nav {
+    background: black;
+    text-align: center;
+    padding: 10px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 400px;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+  }
+  
+  ul {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  li {
+    margin-right: 20px;
+    margin-bottom: 10px;
+  }
+  
+  a {
+    color: white;
+    text-decoration: none;
+    font-size: 20px;
+    animation: blinking 1s infinite;
+  }
+  
+  .container {
+    text-align: center;
+    margin-top: 50px;
+  }
+  
+  h1 {
+    font-size: 32px;
+  }
+  
+  @keyframes blinking {
+    0% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.25;
+      color:yellow
+    }
+    100% {
+      opacity: 1;
+      color:orange
+    }
+  }
+  

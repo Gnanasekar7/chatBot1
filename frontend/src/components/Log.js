@@ -12,7 +12,6 @@ function Log() {
   {      
     const {name,value}=e.target
     setFormValues({...formValues, [name] :value})
-    console.log(formValues.email,"usestar")
   }
   const validate = (value)=>{
     const errors={}
@@ -23,6 +22,9 @@ function Log() {
     if(!value.pass){
         errors.password="password is required"
     }
+    if(value.pass.length <6){
+      errors.password="invalid pass"
+    }
     return errors
 }
 const handleSubmit=(e)=>{
@@ -31,7 +33,7 @@ const handleSubmit=(e)=>{
   setHasError(true)
 }
   
-    useEffect(()=>{
+useEffect(()=>{
       if(Object.keys(formErrors).length === 0 && hasError){
       LogApi(formValues)
       .then((res)=>
@@ -66,6 +68,7 @@ const handleSubmit=(e)=>{
         <p>{formErrors.email}</p>
         <label>Password  </label>
         <input type='password' placeholder='Password' name="pass" value={formValues.pass} onChange={handleChange}></input>
+        <p>{formErrors.password}</p>
         <input type='submit' value='Submit'  /*onClick={() => window.location.reload(false)}*/></input>
         {console.log(Date.now())}
         </form>
