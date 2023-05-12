@@ -1,38 +1,4 @@
 
-# import jwt
-# import bcrypt
-# from flask_bcrypt import Bcrypt
-# from application import app
-# from flask import Response,request,make_response,jsonify
-# from datetime import datetime,timedelta
-# from flask_pymongo import PyMongo
-# from functools import wraps
-# from flask_jwt_extended import jwt_required,create_access_token
-
-# mongo_reg=PyMongo(app,uri='mongodb://localhost:27017/test')
-# db= mongo_reg.db
-
-# bcrypt = Bcrypt()
-
-
-
-
-# @app.route('/login',methods=['POST','GET'])
-# def login():   
-#   if request.method=='POST':
-#     data = request.get_json()
-#     fname = data["Firstname"]
-#     lname = data["Lastname"]
-#     email = data["Email"]
-#     passw = bcrypt.generate_password_hash(data["Passw"].encode('utf-8'))
-#     # cpass=data["Cpass"]
-#     user = {"fname": fname, "lname": lname, "email": email, "Password": passw}
-#     print(user)
-#     db.data.insert_one(user)
-#     return {"message": "User registered successfully"}
-
-
-
 import jwt
 import bcrypt
 from flask_bcrypt import Bcrypt
@@ -65,10 +31,7 @@ user_schema = UserSchema()
 @app.route('/Register', methods=['POST'])
 def register():
     try:
-        # Validate the input data against the User schema
-        f=request.get_json()
-        # print(f)
-        # print(user_schema.load(request.get_json()))
+        # Validate the input data against the User schema       
         data = user_schema.load(request.get_json())
         print(data)
         # Check if the email is already registered
@@ -91,16 +54,6 @@ def register():
         }
         db.users.insert_one(user)
 
-        # Return a success message
-        # response = jsonify({'message': 'Login successful'},'ok')
-        # response.headers['Authorization'] = f'Bearer {token}'
-        # response.headers.add('Access-Control-Allow-Origin', '  *')
-        # response.headers.add('Access-Control-Allow-Headers', 'Authorization')
-        # response.headers.add('Access-Control-Allow-Methods', '*')
-        # response.headers.add('Access-Control-Check', 'ok')
-        # response.headers.add('HTTP status', 'ok')
-        # print(response)
-        # return response,200
         return {'message': 'User registered successfully'}
 
 
@@ -220,7 +173,6 @@ def history():
     updated_input = existing_input + [new_input]
     db.history.update_one({'_id': check['_id']}, {'$set': {'input': updated_input}})
     
-    # db.history.update_one({'_id': check['_id']}, {'$set': {'input': new_input}})
   else:
     Nhistory={
        'email':email,
@@ -229,7 +181,23 @@ def history():
     db.history.insert_one(Nhistory)  
 
   response = jsonify({'message': 'Login successful'})
-  # response.headers['Authorization'] = f'Bearer {token}'
   response.headers.add('Access-Control-Allow-Origin', '*')
   print(response)
   return response
+@app.route('/fetch',methods=['POST','GET'])
+def fetch():
+    # det = request.get_json()
+    # email=det['Email']
+    # print(det,'kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk')
+    # return'Login successful'
+    data = []
+    # for doc in db.Question.find({'_id': False,'documents':True}):
+    #     data.append(doc.documents[0])
+    # print(data)
+    cur=db.history.find()
+    for i in cur:
+      i['_id']=str(i['_id'])
+      data.append(i)
+    print(data)  
+    # print(list(db.Question.find({'_id': False})))
+    return jsonify({'data': data})

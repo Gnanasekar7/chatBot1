@@ -1,6 +1,5 @@
 import React,{useEffect,useState} from 'react'
 import { LogApi } from '../services/LogApi'
-import axios from "axios"
 import { useNavigate } from 'react-router-dom'
 function Log() {
 
@@ -55,10 +54,6 @@ const handleSubmit=(e)=>{
       
       )
       .catch(e=>console.log(e))
-      // let data={Email:formValues.email}
-      // axios.post("http://127.0.0.1:5000/history",data)
-      // .then(res=>{console.log(res,"history")})
-      // .catch(e=>{console.log(e)})
     }
   },[formErrors])
 
@@ -74,6 +69,7 @@ const handleSubmit=(e)=>{
         <input type='submit' value='Submit'  /*onClick={() => window.location.reload(false)}*/></input>
         {console.log(Date.now())}
         </form>
+        
     </div>
   );
 }

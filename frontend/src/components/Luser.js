@@ -7,8 +7,9 @@ function Luser() {
   const [values, setValues] = useState('');
   const [values1, setValues1] = useState('');
   const [values2, setValues2] = useState('');
-  // const [values3, setValues3] = useState('');
   const [final,setFinal]=useState(false)
+  const [history,setHistory]=useState([])
+  const[email,setEmail]=useState('')
   const location = useLocation();
    
 const [showOptions, setShowOptions] = useState(false);const [showOptions1, setShowOptions1] = useState(false);const [showOptions2, setShowOptions2] = useState(false);const [showOptions3, setShowOptions3] = useState(false);
@@ -45,25 +46,21 @@ const handleButtonClick = (index,value) => {
 const handleButtonClick1=(index,value)=>{
   if (index==0)
   {
-    // setShowOptions(showOptions);setShowOptions1(false);setShowOptions2(false);setShowOptions3(false)
     setSub0(!sub0);setSub01(false);setSub02(false);setSub03(false)
     setValues1(value);
   }  
   else if(index==1)
   {
-    // setShowOptions1(showOptions1);setShowOptions(false);setShowOptions2(false);setShowOptions3(false);
     setSub0(false);setSub01(!sub01);setSub02(false);setSub03(false)
     setValues1(value);
   }
   else if(index==2)
   {
-    // setShowOptions2(showOptions2);setShowOptions1(false);setShowOptions(false);setShowOptions3(false);
     setSub0(false);setSub01(false);setSub02(!sub02);setSub03(false)
     setValues1(value);
   }
   else if(index==3)
   {
-    // setShowOptions3(showOptions3);setShowOptions1(false);setShowOptions2(false);setShowOptions(false);
     setSub0(false);setSub01(false) ;setSub02(false);setSub03(!sub03) 
     setValues1(value); 
   }
@@ -132,7 +129,7 @@ const handleButtonClick4=(index,value)=>{
   {
     setSub3(false);setSub31(false);setSub32(false);setSub33(!sub33)
     setValues1(value);
-    // console.log(values3)
+  
   }
 }
 
@@ -143,9 +140,10 @@ const Button = ({ value, onClick }) => {
     </button>
   );
 };
-  useEffect(()=>
+useEffect(()=>
   {  
-    
+    const userEmail = location.state?.email || ''; 
+    setEmail(userEmail)  
   if(firstTime){
     
     axios.get('http://127.0.0.1:5000/protected-user',
@@ -163,48 +161,67 @@ const Button = ({ value, onClick }) => {
     })
     axios.get("http://127.0.0.1:5000/userreq")
     .then(res=>{
-      // let setDat=res.data.data[0].documents
-      // console.log(setDat)
       setData(res.data.data)
       console.log(res.data.data[0],"optisol")
     })
     .catch(e=>{
       console.log(e)
     })
+    axios.get("http://127.0.0.1:5000/fetch")
+    .then(res=>{
+      res.data.data.map(item=>
+        {
+      if({item}.item.email==userEmail){
+        setHistory({item}.item.input)
+      }
+       })})
+    .catch(e=>{
+      console.log(e)
+    })
+    
       setFirstTime(false)
   }
- 
+
 }
+
   ,[])
-  
-  
+   
   useEffect(() => {
-    // localStorage.setItem('myValues', JSON.stringify(values));
-    // localStorage.setItem('myValues1', JSON.stringify(values1));
-    // localStorage.setItem('myValues2', JSON.stringify(values2));
-    // localStorage.setItem('myValues3', JSON.stringify(values3));
-    // const userEmail = location.state?.email || ''; 
-    // let data={Email:userEmail,myValues:values,myValues1:values1,myValues2:values2,myValues3:values3}
-    // axios.post("http://127.0.0.1:5000/history",data)
-    // .then(res=>{console.log(res,"history")})
-    // .catch(e=>{console.log(e)})
     if(values && values1 && values2){
       setFinal(true)
       console.log(final)
     }
   }, [values,values1,values2]);
   
-  // console.log(userEmail,)
-  // {console.log(values.length)}
-const handleSubmit =()=>{
+const handleSubmit =()=>
+{
   const userEmail = location.state?.email || ''; 
   let inputvalues=[]
   inputvalues.push(values,values1,values2)
     let data={Email:userEmail,myValues:inputvalues}
     axios.post("http://127.0.0.1:5000/history",data)
-    .then(res=>{console.log(res,"history")})
+    .then(res=>{
+      if(res.status ==200){
+        alert('Your response has been recorded')
+        window.location.reload(false)
+      }
+    })
     .catch(e=>{console.log(e)})
 }
+const renderArray = (array) => {
+  return array.map((element, index) => (
+    <div key={index}>{element}</div>
+  ));
+};
+
+const renderLastArrayElements = (array) => {
+  return array.slice(3).map((element, index) => (
+    <div key={index}>
+      <h2>Previous login info:</h2>
+      {renderArray(element)}
+    </div>
+  ));
+};
   return (
   <div>
       {data.map(data1 => (
@@ -242,11 +259,9 @@ const handleSubmit =()=>{
          {
             sub0 ?
                 data1.documents[0].followUpQuestions[0].sub.map((item)=>{
-                  // return(<><button >{item}</button></>) })
                   return(<><Button value={item}  onClick={() =>setValues2(item)} /></>)})
                   :null
          }
-         {/* {console.log(values)} */}
          {
            sub01 ?
                 data1.documents[0].followUpQuestions[1].sub.map((item)=>{
@@ -341,7 +356,6 @@ const handleSubmit =()=>{
                   return(<><Button value={item}  onClick={() =>setValues2(item)} /></>)})
                   :null
         }
-        {/* {console.log(values3)} */}
        
         </div>
       ))}
@@ -350,6 +364,33 @@ const handleSubmit =()=>{
         final?
          <><button onClick={()=>{handleSubmit()}}>Submit</button></>:null
       }
+      </div>
+      <div
+      style={{
+        position: 'fixed',
+        top: '0',
+        right: '0',
+        height: '100%',
+        width: '300px',
+        padding: '10px',
+        boxSizing: 'border-box',
+        backgroundColor: 'black',
+        color: 'white',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'flex-start',
+        overflow: 'auto',
+      }}
+    >
+    
+      <h2>Welcome {email}</h2>
+      <h2>Last login info:</h2>
+       {
+      renderArray(history.slice(0, 3))
+       } 
+       {
+        renderLastArrayElements(history)
+       }
       </div>
   </div>
   )

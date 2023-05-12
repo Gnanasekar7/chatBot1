@@ -1,6 +1,6 @@
 import React,{ useState,useEffect } from 'react';
 import { RegisterApi } from '../services/RegisterApi';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate,Link } from 'react-router-dom';
 
 
 function Register(){
@@ -96,6 +96,8 @@ useEffect(()=>{
                         <br/>
                         <p>{formErrors.cpass}</p>
                         <input type='submit' value='Register'  /*onClick={() => window.location.reload(false)}*/></input>
+                        <br/>
+                        <Link to='/login'>Already a user? Login</Link>
                      </form>
                   </div>
                 </div>
