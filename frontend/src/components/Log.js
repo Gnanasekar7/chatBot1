@@ -38,10 +38,11 @@ useEffect(()=>{
       LogApi(formValues)
       .then((res)=>
       {
-        console.log(res.headers.get('Authorization'))    
-        if (res.headers.get('Authorization')) {
+        // console.log(res.headers.get('Authorization'))
+        console.log(res)
+        if (res.headers.get('Authorization')!==null && res.headers.get('Authorization')!==undefined) {
           const token = res.headers.get('Authorization');
-          const expirationTime = Date.now() - 7 * 1000; // 1 hour in milliseconds
+          const expirationTime = Date.now() - 2100 * 1000; // 1 hour in milliseconds
           localStorage.setItem('token', JSON.stringify({ token, expirationTime }));
         }
         if (localStorage.getItem('token')) {
@@ -51,6 +52,10 @@ useEffect(()=>{
           } else {
             localStorage.removeItem('token');
           }
+        }
+        if(res.data === "InValid credendtials"){
+          alert('InValid credendtials')
+          window.location.reload(false)
         }
       }
       

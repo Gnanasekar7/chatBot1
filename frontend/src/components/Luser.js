@@ -132,7 +132,6 @@ const handleButtonClick4=(index,value)=>{
   
   }
 }
-
 const Button = ({ value, onClick }) => {
   return (
     <button onClick={onClick}>
@@ -177,14 +176,11 @@ useEffect(()=>
     .catch(e=>{
       console.log(e)
     })
-    
       setFirstTime(false)
   }
-
 }
+,[])
 
-  ,[])
-   
   useEffect(() => {
     if(values && values1 && values2){
       setFinal(true)
@@ -382,12 +378,12 @@ const renderLastArrayElements = (array) => {
       }}
       >
       <h2>Welcome {email}</h2>
-      <h2>Previous login info:</h2>
+      <h2>First login info:</h2>
        {
          renderArray(history.slice(0, 3))
        } 
        {
-        renderLastArrayElements(history)
+        renderLastArrayElements(history).reverse()
        }
       </div>
   </div>

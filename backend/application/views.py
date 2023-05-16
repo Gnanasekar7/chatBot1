@@ -1,4 +1,3 @@
-
 import bcrypt
 from flask_bcrypt import Bcrypt
 from application import app
@@ -59,20 +58,23 @@ def register():
 def check():
   if request.method=='POST':
     data = request.get_json()
+    # print(data)
     email = data["Email"]
     passw=data["Password"]
     user1 = db.users.find_one({'email': email})
-  if user1:
+    print(user1)
+    if user1:
       # check if the password matches the hashed password in the database
-    if bcrypt.check_password_hash(user1['password'].decode('utf-8'), passw):
-      token=create_access_token(identity=user1['email'], expires_delta=timedelta(seconds=10))
-      response = jsonify({'message': 'Login successful'})
-      response.headers['Authorization'] = f'Bearer {token}'
-      response.headers.add('Access-Control-Allow-Origin', '*')
-      print(response)
-      return response
-    else:
-       return Response('InValid credendtials')
+      if bcrypt.check_password_hash(user1['password'].decode('utf-8'), passw):
+        # print(bcrypt.check_password_hash(user1['password'].decode('utf-8'), passw))
+          token=create_access_token(identity=user1['email'], expires_delta=timedelta(seconds=10))
+          response = jsonify({'message': 'Login successful'})
+          response.headers['Authorization'] = f'Bearer {token}'
+          response.headers.add('Access-Control-Allow-Origin', '*')
+          print(response)
+          return response
+      else:
+          return Response('InValid credendtials')
 
 # for logging in and check the password before login and add the generated token to the headers while sending the response
 @app.route('/admincheck',methods=['POST','GET'])
@@ -108,7 +110,7 @@ def protecteduser():
 def protectedadmin():
      auth_header = request.headers.get('Authorization')
      if auth_header:
-      return jsonify({'message': 'Token is valid'})
+      return jsonify({'message': 'adminToken is valid'})
      
 # stores the questions by the admin in the db
 @app.route('/Adminstore',methods=['POST','GET'])
@@ -137,6 +139,7 @@ def get_collection():
 @app.route('/history',methods=['POST','GET'])
 def history():
   data = request.get_json()
+  print(data,'kkkkkkkkkkkkkkkkkkkkkkkkkkkk')
   email=data['Email']
   new_input=data["myValues"]
   check=db.history.find_one({"email":email})
