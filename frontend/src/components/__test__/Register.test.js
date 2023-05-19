@@ -57,9 +57,9 @@ describe('Register component', () => {
       });
 
       // Verify window.alert was called with the correct message
-      // expect(mockAlert).toHaveBeenCalledTimes(1);
-      // expect(mockAlert).toHaveBeenCalledWith('successfully registered');
-      // expect(navigate).toHaveBeenCalledWith('/login');
+        // expect(mockAlert).toHaveBeenCalledTimes(1);
+        // expect(mockAlert).toHaveBeenCalledWith('successfully registered');
+        // expect(navigate).toHaveBeenCalledWith('/login');
 
       // Verify that form errors are not displayed
       expect(queryByText('First Name is required')).toBeNull();

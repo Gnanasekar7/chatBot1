@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, fireEvent } from '@testing-library/react';
+import { render, fireEvent,getAllByRole} from '@testing-library/react';
 import axios from 'axios';
 import Ladmin from '../Ladmin';
 import '@testing-library/jest-dom/extend-expect';
@@ -12,11 +12,11 @@ describe('Ladmin component', () => {
     const addInitialButton = getByText('Add initial question');
     fireEvent.click(addInitialButton);
     const initialQuestion = getAllByRole('textbox')[0];
-    expect(initialQuestion).toBeInTheDocument();
+    expect(initialQuestion).toBeInTheDocument(); 
   });
 
   test('should add a follow-up question', () => {
-    const { getByText, getAllByRole } = render(<Ladmin />);
+    const { getByText, getAllByRole } = render(<Ladmin />); 
     const addInitialButton = getByText('Add initial question');
     fireEvent.click(addInitialButton);
     const addFollowUpButton = getAllByRole('button', { name: 'Add' })[0];
@@ -38,17 +38,19 @@ describe('Ladmin component', () => {
   });
   
   test('should update the initial question', () => {
-    const { getByLabelText } = render(<Ladmin />);
-    const addInitialButton = getAllByRole('Add initial question');
+    const { getByText,getAllByRole } = render(<Ladmin />);
+    // const addInitialButton = getByRole('button','Add initial question') ;
+    // const initialQuestion = getByLabelText('Initial Question 1');
+    const addInitialButton = getByText('Add initial question');
     fireEvent.click(addInitialButton);
-    const initialQuestion = getByLabelText('Initial Question 1');
+    const initialQuestion = getAllByRole('textbox')[0];
     fireEvent.change(initialQuestion, { target: { value: 'Updated Initial Question' } });
     expect(initialQuestion.value).toBe('Updated Initial Question');
-  });
-  
+  }); 
+         
   test('should update the follow-up question', () => {
     const { getByText, getAllByRole } = render(<Ladmin />);
-    const addInitialButton = getByText('Add initial question');
+    const addInitialButton = getByText('Add initial question'); 
     fireEvent.click(addInitialButton);
     const addFollowUpButton = getAllByRole('button', { name: 'Add' })[0];
     fireEvent.click(addFollowUpButton);
