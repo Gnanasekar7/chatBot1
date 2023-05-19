@@ -22,9 +22,6 @@ function Log() {
     if(!value.pass){
         errors.password="password is required"
     }
-    if(value.pass.length <6){
-      errors.password="invalid pass"
-    }
     return errors
 }
 const handleSubmit=(e)=>{
@@ -34,12 +31,13 @@ const handleSubmit=(e)=>{
 }
   
 useEffect(()=>{
+  
       if(Object.keys(formErrors).length === 0 && hasError){
       LogApi(formValues)
       .then((res)=>
       {
         // console.log(res.headers.get('Authorization'))
-        console.log(res)
+        // console.log(res)
         if (res.headers.get('Authorization')!==null && res.headers.get('Authorization')!==undefined) {
           const token = res.headers.get('Authorization');
           const expirationTime = Date.now() - 2100 * 1000; // 1 hour in milliseconds

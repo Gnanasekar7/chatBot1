@@ -140,11 +140,12 @@ const Button = ({ value, onClick }) => {
   );
 };
 useEffect(()=>
-  {  
+  {
+    // email from the login page  
     const userEmail = location.state?.email || ''; 
     setEmail(userEmail)  
   if(firstTime){
-    
+   //allows only the response from the backend has token in its headers 
     axios.get('http://127.0.0.1:5000/protected-user',
    {
       headers: {
@@ -157,14 +158,16 @@ useEffect(()=>
     .catch(error => {
       console.error(error);
     })
+     // fetch the Questions provided by the admin
     axios.get("http://127.0.0.1:5000/userreq")
     .then(res=>{
       setData(res.data.data)
-      console.log(res.data.data[0],"optisol")
+      // console.log(res.data.data[0],"optisol")
     })
     .catch(e=>{
       console.log(e)
     })
+    // fetch history of the logged in user
     axios.get("http://127.0.0.1:5000/fetch")
     .then(res=>{
       res.data.data.map(item=>
@@ -194,6 +197,7 @@ const handleSubmit =()=>
   let inputvalues=[]
   inputvalues.push(values,values1,values2)
     let data={Email:userEmail,myValues:inputvalues}
+    //post the history after submit
     axios.post("http://127.0.0.1:5000/history",data)
     .then(res=>{
       if(res.status ==200){
@@ -203,6 +207,8 @@ const handleSubmit =()=>
     })
     .catch(e=>{console.log(e)})
 }
+
+//render the history of the user
 const renderArray = (array) => {
   return array.map((element, index) => (
     <div key={index}>{element}</div>

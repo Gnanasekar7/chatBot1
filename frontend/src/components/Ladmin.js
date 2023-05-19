@@ -5,41 +5,44 @@ import axios from "axios"
 function Ladmin() {
 
   const [initialQuestions, setInitialQuestions] = useState([]);
-
+//adding initial question
   const addInitialQuestion = useCallback(() => {
+    //setting the limit to four
     if (initialQuestions.length < 4) {
       setInitialQuestions([...initialQuestions, {question: '', followUpQuestions:[]}]);
     }
   }, [initialQuestions]);
-
+// updating the initial questions 
   const updateInitialQuestion = useCallback((index, value) => {
     const updatedQuestions = [...initialQuestions];
     updatedQuestions[index].question = value;
     setInitialQuestions(updatedQuestions);
   }, [initialQuestions]);
-
+// adding followup Questions
   const addFollowUpQuestion = useCallback((index) => {
     const updatedQuestions = [...initialQuestions];
+    //setting the limit to four
     if (updatedQuestions[index].followUpQuestions.length < 4) {
       updatedQuestions[index].followUpQuestions.push({name:'',sub:[]});
       setInitialQuestions(updatedQuestions);
     }
   }, [initialQuestions]);
-
+//update the followup question
   const updateFollowUpQuestion = useCallback((initialIndex , followUpIndex, value) => {
     const updatedQuestions = [...initialQuestions];
     updatedQuestions[initialIndex].followUpQuestions[followUpIndex].name= value;
     setInitialQuestions(updatedQuestions);
   }, [initialQuestions]);
-
+// adding sub question
   const addSubQues = useCallback((initialIndex, index) => {
     const updatedQuestions = [...initialQuestions];
+    //setting the limit to four
     if (updatedQuestions[initialIndex].followUpQuestions[index].sub.length<4){
       updatedQuestions[initialIndex].followUpQuestions[index].sub.push('')
       setInitialQuestions(updatedQuestions);
     }
   }, [initialQuestions]);
-
+// updating the sub Question
   const updateSubQues = useCallback((initialIndex, followUpIndex, index, value) => {
     const updatedQuestions = [...initialQuestions];
     updatedQuestions[initialIndex].followUpQuestions[followUpIndex].sub[index] = value;
@@ -82,12 +85,13 @@ const renderInitialQuestions = useCallback(() => {
 );
 }, [initialQuestions, addFollowUpQuestion, updateInitialQuestion, renderFollowUpQuestions]);
 
+// posting the queries
 const handleSave = () => {
 axios.post("http://127.0.0.1:5000/Adminstore", initialQuestions)
 .then((res) =>{
 if (res.status ==200){
-  alert ('sucessfully registered ')
-  window.location.reload(false)
+  // alert ('sucessfully registered ')
+  // window.location.reload(false)
 }
 }
  )

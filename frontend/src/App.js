@@ -25,10 +25,11 @@ return(
             <Route path='/admin' element={<Admin/>}></Route>
            
             <Route element={<ProtectedUser/>}>
-             <Route   path="/Luser" element={<Luser/>}/>
+                <Route   path="/Luser" element={<Luser/>}/>
             </Route>
+            
             <Route element={<ProtectedAdmin/>}>
-             <Route   path="/Ladmin" element={<Ladmin/>}/>
+                <Route   path="/Ladmin" element={<Ladmin/>}/>
             </Route>
     
           </Routes>
