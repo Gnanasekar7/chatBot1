@@ -37,7 +37,7 @@ useEffect(()=>{
       .then((res)=>
       {
         // console.log(res.headers.get('Authorization'))
-        // console.log(res)
+        console.log(res)
         if (res.headers.get('Authorization')!==null && res.headers.get('Authorization')!==undefined) {
           const token = res.headers.get('Authorization');
           const expirationTime = Date.now() - 2100 * 1000; // 1 hour in milliseconds

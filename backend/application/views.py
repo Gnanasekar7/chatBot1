@@ -53,6 +53,45 @@ def register():
         # Return an error message if the input data does not match the schema
         return {'message': error.messages}, 400
 
+# @app.route('/Register', methods=['POST'])
+# def register():
+#     try:
+#         # Validate the input data against the User schema
+#         data = request.get_json()
+#         errors = user_schema.validate(data)
+        
+#         if errors:
+#             # Return an error message if the input data does not match the schema
+#             return {'message': errors}, 400
+
+#         # Check if the email is already registered
+#         if db.users.find_one({'email': data['email']}):
+#             return {'message': 'Email already registered'}
+
+#         # Check if the passwords match
+#         if data['password'] != data['confirm_password']:
+#             return {'message': 'Passwords do not match'}
+
+#         # Hash the password
+#         hashed_password = bcrypt.generate_password_hash(data['password'].encode('utf-8'))
+
+#         # Save the user to the database
+#         user = {
+#             'firstname': data['firstname'],
+#             'lastname': data['lastname'],
+#             'email': data['email'],
+#             'password': hashed_password
+#         }
+#         db.users.insert_one(user)
+        
+#         return {'message': 'User registered successfully'}
+
+    # except Exception as e:
+    #     # Return a generic error message if an exception occurs
+    #     return {'message': 'An error occurred'}, 500
+
+
+
 # for logging in and check the password before login
 @app.route('/login', methods=['POST'])
 def check():
@@ -65,7 +104,7 @@ def check():
     print(user1)
     if user1:
       # check if the password matches the hashed password in the database
-      if bcrypt.check_password_hash(user1['password'].decode('utf-8'), passw):
+      if bcrypt.check_password_hash(user1['password'], passw):
         # print(bcrypt.check_password_hash(user1['password'].decode('utf-8'), passw))
           token=create_access_token(identity=user1['email'], expires_delta=timedelta(seconds=10))
           response = jsonify({'message': 'Login successful'})
@@ -75,36 +114,61 @@ def check():
           return response
       else:
           return Response('InValid credendtials')
+    else:
+        return Response('Invalid credentials')  # Return an error response for invalid credentials
 
 # for logging in and check the password before login and add the generated token to the headers while sending the response
-@app.route('/admincheck',methods=['POST','GET'])
+# @app.route('/admincheck',methods=['POST','GET'])
+# def admincheck():
+#   if request.method=='POST':
+#     data = request.get_json()
+#     email = data["Email"]
+#     passw=data["Password"]
+#     user1 = db.admin.find_one({'email': email})
+#     if user1:
+#        # check if the password matches the hashed password in the database
+#       if(passw==user1['Password']):
+#         token=create_access_token(identity=user1['email'], expires_delta=timedelta(seconds=10))
+#         print(token)
+#         response = jsonify({'message': 'Valid credendtials'})
+#         response.headers['Authorization'] = f'Bearer {token}'
+#         response.headers.add('Access-Control-Allow-Origin', '  *')
+#         response.headers.add('Access-Control-Allow-Headers', 'Authorization')
+#         print(response)
+#         return response
+#       else:
+#         return Response('Invalid credendtials')
+#     else:
+#         return Response('Invalid credentials', status=401)  # Return an error response for invalid credentials
+
+@app.route('/admincheck', methods=['POST'])
 def admincheck():
-  if request.method=='POST':
     data = request.get_json()
     email = data["Email"]
-    passw=data["Password"]
+    passw = data["Password"]
     user1 = db.admin.find_one({'email': email})
+    
     if user1:
-       # check if the password matches the hashed password in the database
-      if(passw==user1['Password']):
-        token=create_access_token(identity=user1['email'], expires_delta=timedelta(seconds=10))
-        print(token)
-        response = jsonify({'message': 'Valid credendtials'})
-        response.headers['Authorization'] = f'Bearer {token}'
-        response.headers.add('Access-Control-Allow-Origin', '  *')
-        response.headers.add('Access-Control-Allow-Headers', 'Authorization')
-        print(response)
-        return response
-      else:
-        return Response('Invalid credendtials')
-      
+        if passw == user1['Password']:
+            token = create_access_token(identity=user1['email'], expires_delta=timedelta(seconds=10))
+            response = jsonify({'message': 'Valid credentials'})
+            response.headers['Authorization'] = f'Bearer {token}'
+            response.headers.add('Access-Control-Allow-Origin', '*')
+            response.headers.add('Access-Control-Allow-Headers', 'Authorization')
+            return response
+        else:
+            return Response('Invalid credentials')
+    else:
+        return Response('Invalid credentials')
+
 #allows only if the response has token in headers for user
 @app.route('/protected-user',methods=['POST','GET'])
 def protecteduser():
      auth_header = request.headers.get('Authorization')
      if auth_header:
       return jsonify({'message': 'userToken is valid'})
-     
+
+
 #allows only if the response has token in headers for admin
 @app.route('/protected-admin',methods=['POST','GET'])
 def protectedadmin():
@@ -118,7 +182,7 @@ def store():
     data = request.get_json()
     print(data)
     doc_dict = {"documents": data}
-    response = jsonify({'message': 'Valid credendtials'})
+    response = jsonify({'message': 'Response received'})
     response.headers.add('Access-Control-Allow-Origin', '*')
     response.headers.add('Access-Control-Allow-Headers', '*')
     print(response)
@@ -156,7 +220,7 @@ def history():
     }
     db.history.insert_one(Nhistory)  
 
-  response = jsonify({'message': 'Login successful'})
+  response = jsonify({'message': 'History'})
   response.headers.add('Access-Control-Allow-Origin', '*')
   print(response)
   return response

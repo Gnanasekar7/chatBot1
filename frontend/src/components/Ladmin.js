@@ -90,7 +90,7 @@ const handleSave = () => {
 axios.post("http://127.0.0.1:5000/Adminstore", initialQuestions)
 .then((res) =>{
 if (res.status ==200){
-  // alert ('sucessfully registered ')
+  alert ('sucessfully registered ')
   // window.location.reload(false)
 }
 }
