@@ -17,11 +17,6 @@ describe('Register component', () => {
   it('should render and submit the form successfully', async () => {
     const navigate = jest.fn();
 
-    const originalAlert = window.alert;
-    // Mock window.alert and track calls to it
-    const mockAlert = jest.fn();
-    window.alert = mockAlert;
-
     const { getByPlaceholderText, getByRole, queryByText } = render(
       <MemoryRouter>
         <Register navigate={navigate} />
@@ -54,7 +49,7 @@ describe('Register component', () => {
         email: 'john@example.com',
         pass: 'password',
         cpass: 'password',
-      });
+      }); 
 
       // Verify window.alert was called with the correct message
         // expect(mockAlert).toHaveBeenCalledTimes(1);
@@ -69,7 +64,5 @@ describe('Register component', () => {
       expect(queryByText('Password Mismatch')).toBeNull();
     });
 
-    // Restore the original window.alert function
-    window.alert = originalAlert;
   });
 });

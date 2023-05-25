@@ -41,7 +41,7 @@ useEffect(()=>
     AdApi(formValues)
     .then((res)=>
     {
-
+     console.log(res)
     if(res.data.message === 'Valid credendtials')
     {
       alert("valid credentials")

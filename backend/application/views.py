@@ -118,48 +118,52 @@ def check():
         return Response('Invalid credentials')  # Return an error response for invalid credentials
 
 # for logging in and check the password before login and add the generated token to the headers while sending the response
-# @app.route('/admincheck',methods=['POST','GET'])
-# def admincheck():
-#   if request.method=='POST':
-#     data = request.get_json()
-#     email = data["Email"]
-#     passw=data["Password"]
-#     user1 = db.admin.find_one({'email': email})
-#     if user1:
-#        # check if the password matches the hashed password in the database
-#       if(passw==user1['Password']):
-#         token=create_access_token(identity=user1['email'], expires_delta=timedelta(seconds=10))
-#         print(token)
-#         response = jsonify({'message': 'Valid credendtials'})
-#         response.headers['Authorization'] = f'Bearer {token}'
-#         response.headers.add('Access-Control-Allow-Origin', '  *')
-#         response.headers.add('Access-Control-Allow-Headers', 'Authorization')
-#         print(response)
-#         return response
-#       else:
-#         return Response('Invalid credendtials')
-#     else:
-#         return Response('Invalid credentials', status=401)  # Return an error response for invalid credentials
-
-@app.route('/admincheck', methods=['POST'])
+@app.route('/admincheck',methods=['POST','GET'])
 def admincheck():
+  if request.method=='POST':
     data = request.get_json()
     email = data["Email"]
-    passw = data["Password"]
+    passw=data["Password"]
     user1 = db.admin.find_one({'email': email})
-    
+    print(user1)
     if user1:
-        if passw == user1['Password']:
-            token = create_access_token(identity=user1['email'], expires_delta=timedelta(seconds=10))
-            response = jsonify({'message': 'Valid credentials'})
-            response.headers['Authorization'] = f'Bearer {token}'
-            response.headers.add('Access-Control-Allow-Origin', '*')
-            response.headers.add('Access-Control-Allow-Headers', 'Authorization')
-            return response
-        else:
-            return Response('Invalid credentials')
+       # check if the password matches the hashed password in the database
+      if(passw==user1['Password']):
+        token=create_access_token(identity=user1['email'], expires_delta=timedelta(seconds=10))
+        print(token)
+        response = jsonify({'message': 'Valid credendtials'})
+        response.headers['Authorization'] = f'Bearer {token}'
+        response.headers.add('Access-Control-Allow-Origin', '  *')
+        response.headers.add('Access-Control-Allow-Headers', 'Authorization')
+        print(response)
+        return response
+      else:
+        return Response('Invalid credendtials')
     else:
-        return Response('Invalid credentials')
+        return Response('Invalid credentials')  # Return an error response for invalid credentials
+
+# @app.route('/admincheck', methods=['POST'])
+# def admincheck():
+#     data = request.get_json()
+#     # print(data)
+#     email = data["Email"]
+#     passw = data["Password"]
+#     user1 = db.admin.find_one({'email': email})
+#     # user1=db.admin.find()
+#     print(user1)
+
+#     if user1:
+#         if passw == user1['Password']:
+#             token = create_access_token(identity=user1['email'], expires_delta=timedelta(seconds=10))
+#             response = jsonify({'message': 'Valid credentials'})
+#             response.headers['Authorization'] = f'Bearer {token}'
+#             response.headers.add('Access-Control-Allow-Origin', '*')
+#             response.headers.add('Access-Control-Allow-Headers', 'Authorization')
+#             return response
+#         else:
+#             return Response('Invalid credentials')
+#     else:
+#         return Response('Invalid credentials')
 
 #allows only if the response has token in headers for user
 @app.route('/protected-user',methods=['POST','GET'])

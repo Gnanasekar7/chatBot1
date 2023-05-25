@@ -1,13 +1,3 @@
-// import { render, screen } from '@testing-library/react';
-// import Home from '../Home';
-// import{BrowserRouter} from 'react-router-dom'
-
-
-// test('renders learn react link', () => {
-//   render(<Home />,{wrapper:BrowserRouter});
-//   const homeElement = screen.getBy;
-//   expect(linkElement).toBeInTheDocument();
-// });
 import React from 'react';
 import { render, screen} from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
@@ -21,7 +11,7 @@ describe('Home component', () => {
       //   <Home/>
       // </BrowserRouter>
       
-      //alternate method
+      //alternate method 
        <Home />,{wrapper:BrowserRouter}
 
     );

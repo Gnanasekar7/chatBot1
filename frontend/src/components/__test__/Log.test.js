@@ -48,8 +48,6 @@ describe('Log Component', () => {
 
     fireEvent.click(submitButton);
 
-    // expect(alertMock).toHaveBeenCalledWith('Invalid credentials');
-
     alertMock.mockRestore();
   });
 
@@ -87,13 +85,6 @@ describe('Log Component', () => {
     fireEvent.click(submitButton);
  
     expect(axios.post).toHaveBeenCalledWith('/login', { Email: 'test@example.com', Password: 'password' });
- 
-    // expect(localStorageMock.setItem).toHaveBeenCalledWith(
-    //   'token',
-    //   JSON.stringify({ token: 'mockToken', expirationTime: expect.any(Number) })
-    // );
-    // expect(localStorageMock.removeItem).toHaveBeenCalled();
 
-    // expect(navigateMock).toHaveBeenCalledWith('/L');
   });
 });

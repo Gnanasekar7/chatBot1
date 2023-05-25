@@ -1,6 +1,6 @@
 import React,{useState,useEffect} from 'react'
 import axios from "axios"
-import { useLocation } from 'react-router-dom'
+// import { useLocation } from 'react-router-dom'
 function Luser() {
   const[data,setData]=useState([])
   const[firstTime,setFirstTime]=useState(true)
@@ -10,7 +10,7 @@ function Luser() {
   const [final,setFinal]=useState(false)
   const [history,setHistory]=useState([])
   const[email,setEmail]=useState('')
-  const location = useLocation();
+  // const location = useLocation();
    
 const [showOptions, setShowOptions] = useState(false);const [showOptions1, setShowOptions1] = useState(false);const [showOptions2, setShowOptions2] = useState(false);const [showOptions3, setShowOptions3] = useState(false);
 
@@ -154,19 +154,31 @@ useEffect(()=>
     })
     .then(response => {
       console.log((response))
+      // return axios
     })
-    .catch(error => {
-      console.error(error);
+    .catch(error => { 
+      console.error(error); 
     })
+    const fetchData = async () => {
+      try {
+        const response = await axios.get("http://127.0.0.1:5000/userreq");
+        setData(response.data.data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchData(); 
      // fetch the Questions provided by the admin
-    axios.get("http://127.0.0.1:5000/userreq")
-    .then(res=>{
-      setData(res.data.data)
-      // console.log(res.data.data[0],"optisol")
-    })
-    .catch(e=>{
-      console.log(e)
-    })
+    // axios.get("http://127.0.0.1:5000/userreq")
+    // .then(res=>{
+    //   setData(res.data.data)
+    //   // console.log(res.data.data[0],"optisol")
+    // })
+    // .catch(e=>{
+    //   console.log(e)
+    // })
+    fetchData()
     // fetch history of the logged in user
     axios.get("http://127.0.0.1:5000/fetch")
     .then(res=>{
@@ -202,12 +214,13 @@ const handleSubmit =()=>
     .then(res=>{
       if(res.status ==200){
         alert('Your response has been recorded')
-        window.location.reload(false)
+        // window.location.reload(false)
       }
     })
     .catch(e=>{console.log(e)})
 }
 
+  
 //render the history of the user
 const renderArray = (array) => {
   return array.map((element, index) => (

@@ -11,16 +11,6 @@ from pymongo import MongoClient
 from application import app
 from application.views import create_access_token
 
-# from run import register
-
-# class CustomJSONEncoder(json.JSONEncoder):
-#     def default(self, obj):
-#         if isinstance(obj, ObjectId):
-#             return str(obj)
-#         return super().default(obj)
-
-# # Set the JSON encoder for the Flask app
-# app.json_encoder = CustomJSONEncoder
 
 # Create a test class for the registration and login endpoints
 class AuthenticationTestCase(unittest.TestCase):
@@ -124,10 +114,6 @@ class AuthenticationTestCase(unittest.TestCase):
         }
         response = self.app.post('/admincheck', json=data)
         self.assertEqual(response.status_code, 200)
-        # self.assertEqual(response.headers['Content-Type'], 'application/json')
-        # self.assertIn('Authorization', response.headers)
-        # self.assertEqual(response.json['message'], 'Valid credentials')
-        # self.assertEqual(response.headers['Authorization'], 'Bearer mocked-token')
 
     def test_admin_invalid_credentials(self):
         data = {
@@ -139,9 +125,6 @@ class AuthenticationTestCase(unittest.TestCase):
         # self.assertEqual(response.headers['Content-Type'], 'text/plain')
         self.assertNotIn('Authorization', response.headers)
         self.assertEqual(response.data.decode(), 'Invalid credentials')
-
-
-
 
     def test_valid_user_token(self):
         with app.test_client() as client:
@@ -214,39 +197,6 @@ class AuthenticationTestCase(unittest.TestCase):
         response_data = response.json['data']
         for question in questions:
             self.assertIn(question, response_data)
-
-
-    # def test_history(self):
-    #     # Prepare test data
-    #     data = {
-    #         'Email': 'john@example.com',
-    #         'myValues': 'Action 1'
-    #     }
-
-    #     # Send a POST request to the endpoint
-    #     response = self.app.post('/history', json=data)
-
-    #     # Check the response status code
-    #     self.assertEqual(response.status_code, 200)
-
-    #     # Check if the history entry is saved in the database
-    #     history_entry = self.mongo.db.history.find_one({'email': 'john@example.com'})
-    #     self.assertIsNotNone(history_entry)
-    #     self.assertEqual(history_entry['email'], 'john@example.com')
-    #     self.assertIn('Action 1', history_entry['input'])
-
-    #     # Send another POST request with the same email and different action
-    #     data['myValues'] = 'Action 2'
-    #     response = self.app.post('/history', json=data)
-
-    #     # Check the response status code
-    #     self.assertEqual(response.status_code, 200)
-
-    #     # Check if the history entry is updated in the database
-    #     updated_history_entry = self.mongo.db.history.find_one({'email': 'john@example.com'})
-    #     self.assertIsNotNone(updated_history_entry)
-    #     self.assertEqual(updated_history_entry['email'], 'john@example.com')
-    #     self.assertEqual(updated_history_entry['input'], ['Action 1', 'Action 2'])
    
 
     def test_history_route(self):
